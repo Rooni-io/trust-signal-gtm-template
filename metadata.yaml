@@ -1,7 +1,7 @@
 homepage: "https://rooni.io"
 documentation: "https://github.com/Rooni-io/trust-signal-gtm-template#readme"
 versions:
-- sha: "fc7f422567b4b74aa9bc3922c6eb50b4625edb27"
+- sha: "be32b897a3bd7af3e7667244a47b7452837b8af7"
   changeNotes: |-
     Version 1
     - Initial release of the Trust Signal consent banner template.

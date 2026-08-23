@@ -1,13 +1,21 @@
-# Rooni Consent Banner — Google Tag Manager Template
+# Trust Signal — Google Tag Manager Template
 
-**Version 1** — Official Google Tag Manager custom tag template for the **Rooni Consent Banner** (TrustSignal CMP).
+**Version 1** — Official Google Tag Manager custom tag template for the **Trust Signal** consent banner by [Rooni](https://rooni.io).
 
-It loads the Rooni consent banner and preference centre on your site, sets Google Consent Mode v2 defaults before any other tag fires, and keeps every banner setting — purposes, wording, appearance, geo rules — in your Rooni dashboard rather than in GTM.
+It loads the Trust Signal consent banner and preference centre on your site, sets Google Consent Mode v2 defaults before any other tag fires, and keeps every banner setting — purposes, wording, appearance, geo rules — in your Rooni dashboard rather than in GTM.
 
-## Setup
+## Install from the Community Template Gallery
 
-1. In GTM, go to **Templates → Tag Templates → New → ⋮ → Import**, and select `template.tpl` (or install "Rooni Consent Banner" from the Community Template Gallery).
-2. Create a new tag using the **Rooni Consent Banner** template.
+1. In GTM, go to **Templates → Tag Templates → Search Gallery**.
+2. Search for **Trust Signal** or **Rooni**.
+3. Select the **Trust Signal** template and add it to your workspace.
+4. Create a new tag using the template, paste your **Website ID**, and set the trigger to **Consent Initialization — All Pages**.
+5. Publish the container.
+
+## Manual install (before gallery approval)
+
+1. In GTM, go to **Templates → Tag Templates → New → ⋮ → Import**, and select `template.tpl`.
+2. Create a new tag using the **Trust Signal** template.
 3. Paste your **Website ID**, found in the Rooni dashboard under **Websites → Install**.
 4. Set the trigger to **Consent Initialization — All Pages**. This is required: the Consent Mode defaults must be set before any other tag runs.
 5. Publish the container.
@@ -36,7 +44,8 @@ It loads the Rooni consent banner and preference centre on your site, sets Googl
 
 ## Support
 
-- Documentation and dashboard: https://app.rooni.io
+- Website: https://rooni.io
+- Dashboard: https://app.rooni.io
 - Issues: open an issue on this repository.
 
 ## License

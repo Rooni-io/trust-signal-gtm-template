@@ -1,9 +1,21 @@
 homepage: "https://rooni.io"
 documentation: "https://github.com/Rooni-io/trust-signal-gtm-template#readme"
 versions:
-- sha: "63575830d0f2ba7a831233d28b643222bd5a5388"
-  changeNotes: |-
-    Version 1
-    - Initial release of the Trust Signal consent banner template.
-    - Google Consent Mode v2 defaults with configurable wait_for_update.
-    - Website ID format validation, custom script origin support, and template tests.
+  # Newest version first. Replace the sha below with the commit SHA of the
+  # GitHub commit that contains this template.tpl, then push again.
+  - sha: "REPLACE_WITH_COMMIT_SHA_FOR_VERSION_2"
+    changeNotes: |-
+      Version 2
+      - Consent updates now use the Tag Manager updateConsentState API instead of gtag consent commands.
+      - Returning visitors' saved choices are applied synchronously on Consent Initialization.
+      - Region-specific default consent settings (ISO 3166-2) with a global fallback.
+      - Added personalization_storage and security_storage to managed consent types.
+      - Configurable wait_for_update (milliseconds).
+      - Optional ads_data_redaction and url_passthrough settings.
+      - Expanded template tests.
+  - sha: "15442cf4a6f674c6dadbe6458a0222bcc158eed6"
+    changeNotes: |-
+      Version 1
+      - Initial release of the Trust Signal consent banner template.
+      - Google Consent Mode v2 defaults with configurable wait_for_update.
+      - Website ID format validation, custom script origin support, and template tests.

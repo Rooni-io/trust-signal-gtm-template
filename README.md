@@ -1,6 +1,6 @@
 # Trust Signal — Google Tag Manager Template
 
-**Version 2** — Official Google Tag Manager custom tag template for the **Trust Signal** consent banner by [Rooni](https://rooni.io).
+**Version 3** — Official Google Tag Manager custom tag template for the **Trust Signal** consent banner by [Rooni](https://rooni.io).
 
 It loads the Trust Signal consent banner and preference centre on your site, sets Google Consent Mode v2 defaults before any other tag fires, and keeps every banner setting — purposes, wording, appearance, geo rules — in your Rooni dashboard rather than in GTM.
 
@@ -25,17 +25,18 @@ It loads the Trust Signal consent banner and preference centre on your site, set
 | Parameter | Default | Description |
 | --- | --- | --- |
 | Website ID | — | Required. The website identifier from your Rooni dashboard. |
-| Default settings | none (all optional types denied everywhere) | One row per region (ISO 3166-2, comma separated). A blank region row applies everywhere else. |
+| Global defaults | Advertising, analytics and personalization denied; functionality and security granted | Always-visible fallback values applied immediately on Consent Initialization. |
 | Wait for update | `500` | Milliseconds Google tags wait for the visitor's choice. |
+| Override website region rules in GTM | off | Reveals an optional table for GTM-only regional defaults. Normally the published website framework and geo rules are used automatically. |
 | Redact ads data | off | Sets `ads_data_redaction`. |
 | Pass through URLs | off | Sets `url_passthrough`. |
 | Script origin | `https://app.rooni.io` | Base URL serving the banner. |
 
 ## What the tag does
 
-1. Sets default consent with `setDefaultConsentState`, per region, on Consent Initialization.
+1. Sets the visible global fallback with `setDefaultConsentState` synchronously on Consent Initialization. Optional GTM regional rows are applied first when enabled.
 2. Reads the visitor's saved choice (`cs_consent` cookie) and applies it immediately with `updateConsentState`.
-3. Loads `<Script origin>/cmp/<Website ID>.js`. When the visitor changes their choice, the banner calls back into the template, which calls `updateConsentState` (no `gtag('consent', …)` commands).
+3. Loads `<Script origin>/cmp/<Website ID>.js`. The hosted CMP resolves that website's published framework and geographic rules automatically, then routes saved and new choices through the template's `updateConsentState` bridge (no `gtag('consent', …)` commands).
 4. Calls `gtmOnSuccess()` / `gtmOnFailure()`.
 
 Consent types: `ad_storage`, `ad_user_data`, `ad_personalization`, `analytics_storage`, `functionality_storage`, `personalization_storage`, `security_storage` (always granted).

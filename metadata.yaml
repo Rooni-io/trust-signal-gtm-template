@@ -3,6 +3,14 @@ documentation: "https://github.com/Rooni-io/trust-signal-gtm-template#readme"
 versions:
   # Newest version first. Replace the sha below with the commit SHA of the
   # GitHub commit that contains this template.tpl, then push again.
+  - sha: "REPLACE_WITH_VERSION_3_TEMPLATE_COMMIT_SHA"
+    changeNotes: |-
+      Version 3
+      - Replaced the crowded default table with seven always-visible global consent defaults.
+      - Added an optional regional override table, hidden unless explicitly enabled.
+      - Website ID now remains the normal source for published framework and geographic rules.
+      - Regional override rows apply before the global fallback using Google's consent precedence.
+      - Updated template tests for global defaults, regional overrides, and automatic website configuration.
   - sha: "ed09c7ded10c02733eada12a42474c8ef5d8b1a9"
     changeNotes: |-
       Version 2

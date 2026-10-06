@@ -11,7 +11,7 @@ ___INFO___
 {
   "type": "TAG",
   "id": "cvt_rooni_consent_banner",
-  "version": 1,
+  "version": 3,
   "securityGroups": [],
   "displayName": "Trust Signal",
   "categories": [
@@ -47,172 +47,138 @@ ___TEMPLATE_PARAMETERS___
         "args": [
           "^[0-9a-fA-F-]{8,64}$"
         ],
-        "errorMessage": "Website ID should be the identifier shown in your Rooni dashboard (Websites → Install)."
+        "errorMessage": "Website ID should be the identifier shown in your Rooni dashboard (Websites \u2192 Install)."
       }
     ],
-    "help": "Find this in your Rooni dashboard under Websites → Install. It looks like a UUID."
+    "help": "Find this in your Rooni dashboard under Websites \u2192 Install. The published framework and geographic rules for this website are loaded automatically."
   },
   {
     "type": "GROUP",
     "name": "consentDefaults",
-    "displayName": "Google Consent Mode v2 — Default consent state",
+    "displayName": "Google Consent Mode v2 \u2014 Global defaults",
     "groupStyle": "ZIPPY_OPEN",
     "subParams": [
       {
-        "type": "PARAM_TABLE",
-        "name": "defaultSettings",
-        "displayName": "Default settings",
-        "help": "Default consent state applied before the visitor chooses. Add one row per region using ISO 3166-2 codes separated by commas (e.g. <code>FR, DE, US-CA</code>). A row with a blank region applies everywhere else. If you add no rows, every advertising and analytics type is denied in all regions.",
-        "paramTableColumns": [
+        "type": "LABEL",
+        "name": "globalDefaultsHelp",
+        "displayName": "These privacy-safe values are applied immediately on Consent Initialization while TrustSignal loads the published configuration for the Website ID."
+      },
+      {
+        "type": "SELECT",
+        "name": "ad_storage",
+        "displayName": "ad_storage",
+        "simpleValueType": true,
+        "defaultValue": "denied",
+        "selectItems": [
           {
-            "param": {
-              "defaultValue": "",
-              "displayName": "Region (leave blank for all regions)",
-              "name": "region",
-              "type": "TEXT",
-              "simpleValueType": true
-            },
-            "isUnique": true
+            "value": "denied",
+            "displayValue": "Denied"
           },
           {
-            "param": {
-              "defaultValue": "denied",
-              "displayName": "ad_storage",
-              "name": "ad_storage",
-              "type": "SELECT",
-              "selectItems": [
-                {
-                  "value": "granted",
-                  "displayValue": "Granted"
-                },
-                {
-                  "value": "denied",
-                  "displayValue": "Denied"
-                }
-              ],
-              "simpleValueType": true
-            },
-            "isUnique": false
+            "value": "granted",
+            "displayValue": "Granted"
+          }
+        ]
+      },
+      {
+        "type": "SELECT",
+        "name": "ad_user_data",
+        "displayName": "ad_user_data",
+        "simpleValueType": true,
+        "defaultValue": "denied",
+        "selectItems": [
+          {
+            "value": "denied",
+            "displayValue": "Denied"
           },
           {
-            "param": {
-              "defaultValue": "denied",
-              "displayName": "ad_user_data",
-              "name": "ad_user_data",
-              "type": "SELECT",
-              "selectItems": [
-                {
-                  "value": "granted",
-                  "displayValue": "Granted"
-                },
-                {
-                  "value": "denied",
-                  "displayValue": "Denied"
-                }
-              ],
-              "simpleValueType": true
-            },
-            "isUnique": false
+            "value": "granted",
+            "displayValue": "Granted"
+          }
+        ]
+      },
+      {
+        "type": "SELECT",
+        "name": "ad_personalization",
+        "displayName": "ad_personalization",
+        "simpleValueType": true,
+        "defaultValue": "denied",
+        "selectItems": [
+          {
+            "value": "denied",
+            "displayValue": "Denied"
           },
           {
-            "param": {
-              "defaultValue": "denied",
-              "displayName": "ad_personalization",
-              "name": "ad_personalization",
-              "type": "SELECT",
-              "selectItems": [
-                {
-                  "value": "granted",
-                  "displayValue": "Granted"
-                },
-                {
-                  "value": "denied",
-                  "displayValue": "Denied"
-                }
-              ],
-              "simpleValueType": true
-            },
-            "isUnique": false
+            "value": "granted",
+            "displayValue": "Granted"
+          }
+        ]
+      },
+      {
+        "type": "SELECT",
+        "name": "analytics_storage",
+        "displayName": "analytics_storage",
+        "simpleValueType": true,
+        "defaultValue": "denied",
+        "selectItems": [
+          {
+            "value": "denied",
+            "displayValue": "Denied"
           },
           {
-            "param": {
-              "defaultValue": "denied",
-              "displayName": "analytics_storage",
-              "name": "analytics_storage",
-              "type": "SELECT",
-              "selectItems": [
-                {
-                  "value": "granted",
-                  "displayValue": "Granted"
-                },
-                {
-                  "value": "denied",
-                  "displayValue": "Denied"
-                }
-              ],
-              "simpleValueType": true
-            },
-            "isUnique": false
+            "value": "granted",
+            "displayValue": "Granted"
+          }
+        ]
+      },
+      {
+        "type": "SELECT",
+        "name": "functionality_storage",
+        "displayName": "functionality_storage",
+        "simpleValueType": true,
+        "defaultValue": "granted",
+        "selectItems": [
+          {
+            "value": "denied",
+            "displayValue": "Denied"
           },
           {
-            "param": {
-              "defaultValue": "granted",
-              "displayName": "functionality_storage",
-              "name": "functionality_storage",
-              "type": "SELECT",
-              "selectItems": [
-                {
-                  "value": "granted",
-                  "displayValue": "Granted"
-                },
-                {
-                  "value": "denied",
-                  "displayValue": "Denied"
-                }
-              ],
-              "simpleValueType": true
-            },
-            "isUnique": false
+            "value": "granted",
+            "displayValue": "Granted"
+          }
+        ]
+      },
+      {
+        "type": "SELECT",
+        "name": "personalization_storage",
+        "displayName": "personalization_storage",
+        "simpleValueType": true,
+        "defaultValue": "denied",
+        "selectItems": [
+          {
+            "value": "denied",
+            "displayValue": "Denied"
           },
           {
-            "param": {
-              "defaultValue": "denied",
-              "displayName": "personalization_storage",
-              "name": "personalization_storage",
-              "type": "SELECT",
-              "selectItems": [
-                {
-                  "value": "granted",
-                  "displayValue": "Granted"
-                },
-                {
-                  "value": "denied",
-                  "displayValue": "Denied"
-                }
-              ],
-              "simpleValueType": true
-            },
-            "isUnique": false
+            "value": "granted",
+            "displayValue": "Granted"
+          }
+        ]
+      },
+      {
+        "type": "SELECT",
+        "name": "security_storage",
+        "displayName": "security_storage",
+        "simpleValueType": true,
+        "defaultValue": "granted",
+        "selectItems": [
+          {
+            "value": "denied",
+            "displayValue": "Denied"
           },
           {
-            "param": {
-              "defaultValue": "granted",
-              "displayName": "security_storage",
-              "name": "security_storage",
-              "type": "SELECT",
-              "selectItems": [
-                {
-                  "value": "granted",
-                  "displayValue": "Granted"
-                },
-                {
-                  "value": "denied",
-                  "displayValue": "Denied"
-                }
-              ],
-              "simpleValueType": true
-            },
-            "isUnique": false
+            "value": "granted",
+            "displayValue": "Granted"
           }
         ]
       },
@@ -228,6 +194,187 @@ ___TEMPLATE_PARAMETERS___
           }
         ],
         "help": "How long Google tags wait for the visitor's consent before firing. 500 is recommended."
+      }
+    ]
+  },
+  {
+    "type": "GROUP",
+    "name": "regionalOverrides",
+    "displayName": "Regional overrides",
+    "groupStyle": "ZIPPY_CLOSED",
+    "subParams": [
+      {
+        "type": "CHECKBOX",
+        "name": "overrideWebsiteRegions",
+        "checkboxText": "Override website region rules in GTM",
+        "simpleValueType": true,
+        "defaultValue": false,
+        "help": "Leave off to use the framework and region rules published for this Website ID. Turn on only when this GTM container needs its own initial consent defaults."
+      },
+      {
+        "type": "PARAM_TABLE",
+        "name": "regionalDefaultSettings",
+        "displayName": "GTM regional defaults",
+        "help": "Add one row per region using ISO 3166-2 codes separated by commas (for example FR, DE, US-CA). These rows override the global defaults above for matching regions.",
+        "paramTableColumns": [
+          {
+            "param": {
+              "defaultValue": "",
+              "displayName": "Region codes",
+              "name": "region",
+              "type": "TEXT",
+              "simpleValueType": true
+            },
+            "isUnique": true
+          },
+          {
+            "param": {
+              "type": "SELECT",
+              "name": "ad_storage",
+              "displayName": "ad_storage",
+              "simpleValueType": true,
+              "defaultValue": "denied",
+              "selectItems": [
+                {
+                  "value": "denied",
+                  "displayValue": "Denied"
+                },
+                {
+                  "value": "granted",
+                  "displayValue": "Granted"
+                }
+              ]
+            },
+            "isUnique": false
+          },
+          {
+            "param": {
+              "type": "SELECT",
+              "name": "ad_user_data",
+              "displayName": "ad_user_data",
+              "simpleValueType": true,
+              "defaultValue": "denied",
+              "selectItems": [
+                {
+                  "value": "denied",
+                  "displayValue": "Denied"
+                },
+                {
+                  "value": "granted",
+                  "displayValue": "Granted"
+                }
+              ]
+            },
+            "isUnique": false
+          },
+          {
+            "param": {
+              "type": "SELECT",
+              "name": "ad_personalization",
+              "displayName": "ad_personalization",
+              "simpleValueType": true,
+              "defaultValue": "denied",
+              "selectItems": [
+                {
+                  "value": "denied",
+                  "displayValue": "Denied"
+                },
+                {
+                  "value": "granted",
+                  "displayValue": "Granted"
+                }
+              ]
+            },
+            "isUnique": false
+          },
+          {
+            "param": {
+              "type": "SELECT",
+              "name": "analytics_storage",
+              "displayName": "analytics_storage",
+              "simpleValueType": true,
+              "defaultValue": "denied",
+              "selectItems": [
+                {
+                  "value": "denied",
+                  "displayValue": "Denied"
+                },
+                {
+                  "value": "granted",
+                  "displayValue": "Granted"
+                }
+              ]
+            },
+            "isUnique": false
+          },
+          {
+            "param": {
+              "type": "SELECT",
+              "name": "functionality_storage",
+              "displayName": "functionality_storage",
+              "simpleValueType": true,
+              "defaultValue": "granted",
+              "selectItems": [
+                {
+                  "value": "denied",
+                  "displayValue": "Denied"
+                },
+                {
+                  "value": "granted",
+                  "displayValue": "Granted"
+                }
+              ]
+            },
+            "isUnique": false
+          },
+          {
+            "param": {
+              "type": "SELECT",
+              "name": "personalization_storage",
+              "displayName": "personalization_storage",
+              "simpleValueType": true,
+              "defaultValue": "denied",
+              "selectItems": [
+                {
+                  "value": "denied",
+                  "displayValue": "Denied"
+                },
+                {
+                  "value": "granted",
+                  "displayValue": "Granted"
+                }
+              ]
+            },
+            "isUnique": false
+          },
+          {
+            "param": {
+              "type": "SELECT",
+              "name": "security_storage",
+              "displayName": "security_storage",
+              "simpleValueType": true,
+              "defaultValue": "granted",
+              "selectItems": [
+                {
+                  "value": "denied",
+                  "displayValue": "Denied"
+                },
+                {
+                  "value": "granted",
+                  "displayValue": "Granted"
+                }
+              ]
+            },
+            "isUnique": false
+          }
+        ],
+        "enablingConditions": [
+          {
+            "paramName": "overrideWebsiteRegions",
+            "paramValue": true,
+            "type": "EQUALS"
+          }
+        ]
       }
     ]
   },
@@ -279,7 +426,7 @@ const makeNumber = require('makeNumber');
 const decodeUriComponent = require('decodeUriComponent');
 const log = require('logToConsole');
 
-// Consent types managed by Trust Signal. security_storage is always granted.
+// Consent types managed by Trust Signal. security_storage remains granted.
 const CONSENT_TYPES = ['ad_storage', 'ad_user_data', 'ad_personalization', 'analytics_storage', 'functionality_storage', 'personalization_storage'];
 const COOKIE_NAME = 'cs_consent';
 
@@ -293,40 +440,42 @@ const splitRegions = (value) => {
 
 const pick = (value, fallback) => (value === 'granted' || value === 'denied') ? value : fallback;
 
-// 1. Default consent state (per region, set synchronously on Consent Initialization).
-const rows = data.defaultSettings || [];
-let hasGlobalRow = false;
+// 1. Global fallback, set synchronously on Consent Initialization.
+const globalState = {
+  ad_storage: pick(data.ad_storage, 'denied'),
+  ad_user_data: pick(data.ad_user_data, 'denied'),
+  ad_personalization: pick(data.ad_personalization, 'denied'),
+  analytics_storage: pick(data.analytics_storage, 'denied'),
+  functionality_storage: pick(data.functionality_storage, 'granted'),
+  personalization_storage: pick(data.personalization_storage, 'denied'),
+  security_storage: pick(data.security_storage, 'granted'),
+  wait_for_update: wait
+};
+
+// Optional GTM-only regional defaults. These run before the global fallback,
+// following Google's regional precedence rules. Normal installs leave this
+// disabled and use the Website ID's published framework and geo rules.
+const rows = data.overrideWebsiteRegions ? (data.regionalDefaultSettings || []) : [];
 rows.forEach((row) => {
   const state = {
-    ad_storage: pick(row.ad_storage, 'denied'),
-    ad_user_data: pick(row.ad_user_data, 'denied'),
-    ad_personalization: pick(row.ad_personalization, 'denied'),
-    analytics_storage: pick(row.analytics_storage, 'denied'),
-    functionality_storage: pick(row.functionality_storage, 'granted'),
-    personalization_storage: pick(row.personalization_storage, 'denied'),
-    security_storage: pick(row.security_storage, 'granted'),
+    ad_storage: pick(row.ad_storage, globalState.ad_storage),
+    ad_user_data: pick(row.ad_user_data, globalState.ad_user_data),
+    ad_personalization: pick(row.ad_personalization, globalState.ad_personalization),
+    analytics_storage: pick(row.analytics_storage, globalState.analytics_storage),
+    functionality_storage: pick(row.functionality_storage, globalState.functionality_storage),
+    personalization_storage: pick(row.personalization_storage, globalState.personalization_storage),
+    security_storage: pick(row.security_storage, globalState.security_storage),
     wait_for_update: wait
   };
   const regions = splitRegions(row.region);
   if (regions.length > 0) {
     state.region = regions;
+    setDefaultConsentState(state);
   } else {
-    hasGlobalRow = true;
+    log('[Trust Signal] Ignored a regional override with no region code.');
   }
-  setDefaultConsentState(state);
 });
-if (!hasGlobalRow) {
-  setDefaultConsentState({
-    ad_storage: 'denied',
-    ad_user_data: 'denied',
-    ad_personalization: 'denied',
-    analytics_storage: 'denied',
-    functionality_storage: 'granted',
-    personalization_storage: 'denied',
-    security_storage: 'granted',
-    wait_for_update: wait
-  });
-}
+setDefaultConsentState(globalState);
 
 // 2. Optional privacy settings.
 if (data.adsDataRedaction) gtagSet('ads_data_redaction', true);
@@ -358,7 +507,7 @@ if (saved) {
 setInWindow('__ConsentShieldGtmBridge', (purposes) => {
   updateConsentState(toConsentState(purposes));
 }, true);
-setInWindow('__ConsentShieldGtmTemplate', true, true);
+setInWindow('__ConsentShieldGtmTemplate', data.overrideWebsiteRegions ? 'regional_override' : true, true);
 
 // 4. Load the banner.
 const origin = data.scriptOrigin || 'https://app.rooni.io';
@@ -830,7 +979,7 @@ ___WEB_PERMISSIONS___
 ___TESTS___
 
 scenarios:
-- name: Sets a global default with everything optional denied when no rows are configured
+- name: Sets the configured privacy-safe global defaults
   code: |-
     const calls = [];
     mock('setDefaultConsentState', (s) => { calls.push(s); });
@@ -850,12 +999,24 @@ scenarios:
     mock('setDefaultConsentState', (s) => { calls.push(s); });
     mock('injectScript', (url, onSuccess) => { onSuccess(); });
     const testData = mockData;
-    testData.defaultSettings = [{ region: 'US-CA, US-NY', ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted', analytics_storage: 'granted', functionality_storage: 'granted', personalization_storage: 'granted', security_storage: 'granted' }];
+    testData.overrideWebsiteRegions = true;
+    testData.regionalDefaultSettings = [{ region: 'US-CA, US-NY', ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted', analytics_storage: 'granted', functionality_storage: 'granted', personalization_storage: 'granted', security_storage: 'granted' }];
     runCode(testData);
     assertThat(calls.length).isEqualTo(2);
     assertThat(calls[0].region).isEqualTo(['US-CA', 'US-NY']);
     assertThat(calls[0].ad_storage).isEqualTo('granted');
     assertThat(calls[1].ad_storage).isEqualTo('denied');
+- name: Ignores regional rows when the GTM override is disabled
+  code: |-
+    const calls = [];
+    mock('setDefaultConsentState', (s) => { calls.push(s); });
+    mock('injectScript', (url, onSuccess) => { onSuccess(); });
+    const testData = mockData;
+    testData.regionalDefaultSettings = [{ region: 'FR', ad_storage: 'granted' }];
+    runCode(testData);
+    assertThat(calls.length).isEqualTo(1);
+    assertThat(calls[0].region).isUndefined();
+    assertThat(calls[0].ad_storage).isEqualTo('denied');
 - name: Updates consent for a returning visitor from the saved choice
   code: |-
     let update;
@@ -900,7 +1061,15 @@ setup: |-
   const mockData = {
     websiteId: '11111111-2222-3333-4444-555555555555',
     scriptOrigin: 'https://app.rooni.io',
-    defaultSettings: [],
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    functionality_storage: 'granted',
+    personalization_storage: 'denied',
+    security_storage: 'granted',
+    overrideWebsiteRegions: false,
+    regionalDefaultSettings: [],
     waitForUpdate: '500',
     adsDataRedaction: false,
     urlPassthrough: false

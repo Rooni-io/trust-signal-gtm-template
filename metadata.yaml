@@ -3,7 +3,7 @@ documentation: "https://github.com/Rooni-io/trust-signal-gtm-template#readme"
 versions:
   # Newest version first. Replace the sha below with the commit SHA of the
   # GitHub commit that contains this template.tpl, then push again.
-  - sha: "REPLACE_WITH_COMMIT_SHA_FOR_VERSION_2"
+  - sha: "ed09c7ded10c02733eada12a42474c8ef5d8b1a9"
     changeNotes: |-
       Version 2
       - Consent updates now use the Tag Manager updateConsentState API instead of gtag consent commands.

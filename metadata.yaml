@@ -3,7 +3,7 @@ documentation: "https://github.com/Rooni-io/trust-signal-gtm-template#readme"
 versions:
   # Newest version first. Replace the sha below with the commit SHA of the
   # GitHub commit that contains this template.tpl, then push again.
-  - sha: "0856c100337ac210efe2490684dab47377192dfa"
+  - sha: "557221e33e0f6ae015dccead6c4de7373bbd75a1"
     changeNotes: |-
       Version 3
       - Replaced the crowded default table with seven always-visible global consent defaults.

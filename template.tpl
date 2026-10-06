@@ -1,4 +1,4 @@
-﻿___TERMS_OF_SERVICE___
+___TERMS_OF_SERVICE___
 
 By creating or modifying this file you agree to Google Tag Manager's Community
 Template Gallery Developer Terms of Service available at
@@ -23,7 +23,7 @@ ___INFO___
     "displayName": "Rooni",
     "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAADRklEQVR4nN1VTWhcVRT+zrn3TTrz2gaLEOwi1UmkELB0Iw3djAhFsHbaoLNyIbppcaF06Sp0a+lGdGFW7gckkyKCUohQEBd1URApMk2CEAULNpq/ybv3fF28yXTmTTPZ98Bb3HvP+b5zvnPevcDzaAo0HGo139uZuJBWqpdvpdPvrh+tXrk24F2reWBeAcizwJ652bPT9WOViPdAva7qXiMjIArSlhFxa3tl8TsALOD1r4cJKpNzLyGRM6BdFGFdNDlFGsBggAhAiiYKALR4j2QToj+O0bf/fdjcGFlBWq3/TMiMqD8uIiAjwBhzP9E8OxqICIEXTRTiQMtA4pGY3d5aaX3Uj+kH2NTPggYwM5oYhAqIA0CQEaJONHEAHC3ALNsQhB2AFLgXKThfrGCAgD0ZRCHQrqQRECeu5Gjhf1pYBnGHgrtJkPbG2uNN4KeAU7UjZRs/MZKgK0M/ZRRNHC3uMoYvQ+RXnbXW6v7pC9XG+LGXx6eCvHMcXpUm64cQFMFLzhiWxeKnWyu37wNAWr30JsQ3AM52sDcpTk6oeAAe5N7vAGZGEJC5RAiiJU8LC9vtxasAUK7W51T0MxF9HaqgGQSWh9AiYCpAZ3QFRIDQiZa82d7CdnvpKiYupJWj6deq7n2QeZ9CbwAEeaPyTxhGEwj+Eh2bNMvubLeXrqWvXJqgupa65Bxj5+m49gagPxQg5J8iwUBTSTykxY6BH2KmkVDkW3XJOYZOlo9rcQj6aheBUX4dSSAid4Hsi912689KZ/dz9UfOM3QyiCQHAO9HKi0aYd8PnfQvyqfrJ8txb3Mz8ycT73/LO4gDL7Ju8lE0UVq4t9UuzQLN2H860IOdB0vrOwDSqfpNUS+MmUEOuRApBlEXo9wsggMFiYCGAyAgzuZZs+hfAGcmvpQwdH7YXV1sduNHEcwQAMzwCS38B/UewNDo9cBdklgMDxjHPsg3m0MZFQhuGDAvO6tLvwjj2yQfiSY+v4/2y6EBNPFjiVm8b7Hz1vZa829gXgBYkeAAfRsOaMZS9eKrXksLIvpGF5cQl0tHfuMDr2+stR7nL9qNIfBDrKenlqcvf5xWr/yRTs/FytTccnmqXn/qN3/Qv/Gc2BOqAoSZoTUftAAAAABJRU5ErkJggg\u003d\u003d"
   },
-  "description": "Loads Trust Signal cookie banner for your website. Handles GDPR / CCPA consent, Google Consent Mode v2 defaults, and the preference centre - all configurable in your Rooni dashboard.",
+  "description": "Trust Signal consent management platform (CMP) by Rooni. Sets Google Consent Mode v2 defaults (with per-region settings), updates consent through the Tag Manager consent APIs when visitors choose, and loads the banner and preference centre configured in your Rooni dashboard.",
   "containerContexts": [
     "WEB"
   ]
@@ -53,55 +53,213 @@ ___TEMPLATE_PARAMETERS___
     "help": "Find this in your Rooni dashboard under Websites → Install. It looks like a UUID."
   },
   {
-    "type": "TEXT",
-    "name": "scriptOrigin",
-    "displayName": "Script Origin",
-    "simpleValueType": true,
-    "defaultValue": "https://app.rooni.io",
-    "help": "Base URL where the Rooni CMP is served. Leave the default unless you self-host or use a custom domain."
-  },
-  {
     "type": "GROUP",
     "name": "consentDefaults",
-    "displayName": "Google Consent Mode v2 — Defaults",
+    "displayName": "Google Consent Mode v2 — Default consent state",
     "groupStyle": "ZIPPY_OPEN",
     "subParams": [
       {
-        "type": "CHECKBOX",
-        "name": "setDefaultConsent",
-        "checkboxText": "Set default consent state (denied) before banner loads",
-        "simpleValueType": true,
-        "defaultValue": true,
-        "help": "Recommended. Fires gtag(\u0027consent\u0027,\u0027default\u0027, {...:\u0027denied\u0027}) so Google tags wait for the user\u0027s choice."
-      },
-      {
-        "type": "CHECKBOX",
-        "name": "waitForUpdate",
-        "checkboxText": "Wait up to 500ms for visitor\u0027s stored consent before tags fire",
-        "simpleValueType": true,
-        "defaultValue": true,
-        "enablingConditions": [
+        "type": "PARAM_TABLE",
+        "name": "defaultSettings",
+        "displayName": "Default settings",
+        "help": "Default consent state applied before the visitor chooses. Add one row per region using ISO 3166-2 codes separated by commas (e.g. <code>FR, DE, US-CA</code>). A row with a blank region applies everywhere else. If you add no rows, every advertising and analytics type is denied in all regions.",
+        "paramTableColumns": [
           {
-            "paramName": "setDefaultConsent",
-            "paramValue": true,
-            "type": "EQUALS"
+            "param": {
+              "defaultValue": "",
+              "displayName": "Region (leave blank for all regions)",
+              "name": "region",
+              "type": "TEXT",
+              "simpleValueType": true
+            },
+            "isUnique": true
+          },
+          {
+            "param": {
+              "defaultValue": "denied",
+              "displayName": "ad_storage",
+              "name": "ad_storage",
+              "type": "SELECT",
+              "selectItems": [
+                {
+                  "value": "granted",
+                  "displayValue": "Granted"
+                },
+                {
+                  "value": "denied",
+                  "displayValue": "Denied"
+                }
+              ],
+              "simpleValueType": true
+            },
+            "isUnique": false
+          },
+          {
+            "param": {
+              "defaultValue": "denied",
+              "displayName": "ad_user_data",
+              "name": "ad_user_data",
+              "type": "SELECT",
+              "selectItems": [
+                {
+                  "value": "granted",
+                  "displayValue": "Granted"
+                },
+                {
+                  "value": "denied",
+                  "displayValue": "Denied"
+                }
+              ],
+              "simpleValueType": true
+            },
+            "isUnique": false
+          },
+          {
+            "param": {
+              "defaultValue": "denied",
+              "displayName": "ad_personalization",
+              "name": "ad_personalization",
+              "type": "SELECT",
+              "selectItems": [
+                {
+                  "value": "granted",
+                  "displayValue": "Granted"
+                },
+                {
+                  "value": "denied",
+                  "displayValue": "Denied"
+                }
+              ],
+              "simpleValueType": true
+            },
+            "isUnique": false
+          },
+          {
+            "param": {
+              "defaultValue": "denied",
+              "displayName": "analytics_storage",
+              "name": "analytics_storage",
+              "type": "SELECT",
+              "selectItems": [
+                {
+                  "value": "granted",
+                  "displayValue": "Granted"
+                },
+                {
+                  "value": "denied",
+                  "displayValue": "Denied"
+                }
+              ],
+              "simpleValueType": true
+            },
+            "isUnique": false
+          },
+          {
+            "param": {
+              "defaultValue": "granted",
+              "displayName": "functionality_storage",
+              "name": "functionality_storage",
+              "type": "SELECT",
+              "selectItems": [
+                {
+                  "value": "granted",
+                  "displayValue": "Granted"
+                },
+                {
+                  "value": "denied",
+                  "displayValue": "Denied"
+                }
+              ],
+              "simpleValueType": true
+            },
+            "isUnique": false
+          },
+          {
+            "param": {
+              "defaultValue": "denied",
+              "displayName": "personalization_storage",
+              "name": "personalization_storage",
+              "type": "SELECT",
+              "selectItems": [
+                {
+                  "value": "granted",
+                  "displayValue": "Granted"
+                },
+                {
+                  "value": "denied",
+                  "displayValue": "Denied"
+                }
+              ],
+              "simpleValueType": true
+            },
+            "isUnique": false
+          },
+          {
+            "param": {
+              "defaultValue": "granted",
+              "displayName": "security_storage",
+              "name": "security_storage",
+              "type": "SELECT",
+              "selectItems": [
+                {
+                  "value": "granted",
+                  "displayValue": "Granted"
+                },
+                {
+                  "value": "denied",
+                  "displayValue": "Denied"
+                }
+              ],
+              "simpleValueType": true
+            },
+            "isUnique": false
           }
         ]
+      },
+      {
+        "type": "TEXT",
+        "name": "waitForUpdate",
+        "displayName": "Wait for update (milliseconds)",
+        "simpleValueType": true,
+        "defaultValue": "500",
+        "valueValidators": [
+          {
+            "type": "NON_NEGATIVE_NUMBER"
+          }
+        ],
+        "help": "How long Google tags wait for the visitor's consent before firing. 500 is recommended."
       }
     ]
   },
   {
     "type": "GROUP",
-    "name": "advanced",
-    "displayName": "Advanced",
+    "name": "other",
+    "displayName": "Other settings",
     "groupStyle": "ZIPPY_CLOSED",
     "subParams": [
       {
         "type": "CHECKBOX",
-        "name": "asyncLoad",
-        "checkboxText": "Load script asynchronously",
+        "name": "adsDataRedaction",
+        "checkboxText": "Redact ads data when ad_storage is denied",
         "simpleValueType": true,
-        "defaultValue": true
+        "defaultValue": false,
+        "help": "Sets <code>ads_data_redaction</code>. Ad click identifiers are removed from requests while ad_storage is denied."
+      },
+      {
+        "type": "CHECKBOX",
+        "name": "urlPassthrough",
+        "checkboxText": "Pass ad click information through URLs",
+        "simpleValueType": true,
+        "defaultValue": false,
+        "help": "Sets <code>url_passthrough</code> so ad click and analytics information is kept in page URLs while cookies are denied."
+      },
+      {
+        "type": "TEXT",
+        "name": "scriptOrigin",
+        "displayName": "Script origin",
+        "simpleValueType": true,
+        "defaultValue": "https://app.rooni.io",
+        "help": "Base URL that serves the Trust Signal banner. Leave the default unless Rooni has given you a different address."
       }
     ]
   }
@@ -110,67 +268,113 @@ ___TEMPLATE_PARAMETERS___
 
 ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
 
-const injectScript = require('injectScript');
 const setDefaultConsentState = require('setDefaultConsentState');
+const updateConsentState = require('updateConsentState');
+const getCookieValues = require('getCookieValues');
+const injectScript = require('injectScript');
+const setInWindow = require('setInWindow');
+const gtagSet = require('gtagSet');
+const JSON = require('JSON');
+const makeNumber = require('makeNumber');
+const decodeUriComponent = require('decodeUriComponent');
 const log = require('logToConsole');
 
-const id = data.websiteId;
-const origin = data.scriptOrigin || 'https://app.rooni.io';
-const url = origin + '/cmp/' + id + '.js';
+// Consent types managed by Trust Signal. security_storage is always granted.
+const CONSENT_TYPES = ['ad_storage', 'ad_user_data', 'ad_personalization', 'analytics_storage', 'functionality_storage', 'personalization_storage'];
+const COOKIE_NAME = 'cs_consent';
 
-if (data.setDefaultConsent) {
+const waitMs = makeNumber(data.waitForUpdate);
+const wait = waitMs >= 0 ? waitMs : 500;
+
+const splitRegions = (value) => {
+  if (!value) return [];
+  return value.split(',').map((r) => r.trim()).filter((r) => r.length > 0);
+};
+
+const pick = (value, fallback) => (value === 'granted' || value === 'denied') ? value : fallback;
+
+// 1. Default consent state (per region, set synchronously on Consent Initialization).
+const rows = data.defaultSettings || [];
+let hasGlobalRow = false;
+rows.forEach((row) => {
+  const state = {
+    ad_storage: pick(row.ad_storage, 'denied'),
+    ad_user_data: pick(row.ad_user_data, 'denied'),
+    ad_personalization: pick(row.ad_personalization, 'denied'),
+    analytics_storage: pick(row.analytics_storage, 'denied'),
+    functionality_storage: pick(row.functionality_storage, 'granted'),
+    personalization_storage: pick(row.personalization_storage, 'denied'),
+    security_storage: pick(row.security_storage, 'granted'),
+    wait_for_update: wait
+  };
+  const regions = splitRegions(row.region);
+  if (regions.length > 0) {
+    state.region = regions;
+  } else {
+    hasGlobalRow = true;
+  }
+  setDefaultConsentState(state);
+});
+if (!hasGlobalRow) {
   setDefaultConsentState({
-    'ad_storage': 'denied',
-    'ad_user_data': 'denied',
-    'ad_personalization': 'denied',
-    'analytics_storage': 'denied',
-    'functionality_storage': 'granted',
-    'security_storage': 'granted',
-    'wait_for_update': data.waitForUpdate ? 500 : 0
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    functionality_storage: 'granted',
+    personalization_storage: 'denied',
+    security_storage: 'granted',
+    wait_for_update: wait
   });
 }
 
-const onSuccess = () => {
-  log('[Rooni] CMP loaded:', url);
-  data.gtmOnSuccess();
-};
-const onFailure = () => {
-  log('[Rooni] CMP failed to load:', url);
-  data.gtmOnFailure();
+// 2. Optional privacy settings.
+if (data.adsDataRedaction) gtagSet('ads_data_redaction', true);
+if (data.urlPassthrough) gtagSet('url_passthrough', true);
+
+// 3. Consent update — converts granted purposes to a consent mode update.
+const toConsentState = (purposes) => {
+  const granted = {};
+  (purposes || []).forEach((p) => { granted[p] = true; });
+  const state = { security_storage: 'granted' };
+  CONSENT_TYPES.forEach((type) => {
+    state[type] = granted[type] ? 'granted' : 'denied';
+  });
+  return state;
 };
 
-injectScript(url, onSuccess, onFailure, 'rooni-cmp-' + id);
+// Returning visitors: apply their saved choice immediately so tags on this
+// page already see it.
+const saved = getCookieValues(COOKIE_NAME)[0];
+if (saved) {
+  const parsed = JSON.parse(decodeUriComponent(saved));
+  if (parsed && parsed.purposes) {
+    updateConsentState(toConsentState(parsed.purposes));
+  }
+}
+
+// New choices: the banner calls this bridge so every update goes through
+// updateConsentState instead of gtag('consent', 'update').
+setInWindow('__ConsentShieldGtmBridge', (purposes) => {
+  updateConsentState(toConsentState(purposes));
+}, true);
+setInWindow('__ConsentShieldGtmTemplate', true, true);
+
+// 4. Load the banner.
+const origin = data.scriptOrigin || 'https://app.rooni.io';
+const url = origin + '/cmp/' + data.websiteId + '.js';
+injectScript(url, () => {
+  log('[Trust Signal] CMP loaded:', url);
+  data.gtmOnSuccess();
+}, () => {
+  log('[Trust Signal] CMP failed to load:', url);
+  data.gtmOnFailure();
+}, 'rooni-cmp-' + data.websiteId);
 
 
 ___WEB_PERMISSIONS___
 
 [
-  {
-    "instance": {
-      "key": {
-        "publicId": "inject_script",
-        "versionId": "1"
-      },
-      "param": [
-        {
-          "key": "urls",
-          "value": {
-            "type": 2,
-            "listItem": [
-              {
-                "type": 1,
-                "string": "https://app.rooni.io/cmp/*"
-              }
-            ]
-          }
-        }
-      ]
-    },
-    "clientAnnotations": {
-      "isEditedByUser": true
-    },
-    "isRequired": true
-  },
   {
     "instance": {
       "key": {
@@ -357,6 +561,37 @@ ___WEB_PERMISSIONS___
                 "mapValue": [
                   {
                     "type": 1,
+                    "string": "personalization_storage"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": false
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  }
+                ]
+              },
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "consentType"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
                     "string": "security_storage"
                   },
                   {
@@ -368,6 +603,195 @@ ___WEB_PERMISSIONS___
                     "boolean": true
                   }
                 ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "clientAnnotations": {
+      "isEditedByUser": true
+    },
+    "isRequired": true
+  },
+  {
+    "instance": {
+      "key": {
+        "publicId": "get_cookies",
+        "versionId": "1"
+      },
+      "param": [
+        {
+          "key": "cookieAccess",
+          "value": {
+            "type": 1,
+            "string": "specific"
+          }
+        },
+        {
+          "key": "cookieNames",
+          "value": {
+            "type": 2,
+            "listItem": [
+              {
+                "type": 1,
+                "string": "cs_consent"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "clientAnnotations": {
+      "isEditedByUser": true
+    },
+    "isRequired": true
+  },
+  {
+    "instance": {
+      "key": {
+        "publicId": "access_globals",
+        "versionId": "1"
+      },
+      "param": [
+        {
+          "key": "keys",
+          "value": {
+            "type": 2,
+            "listItem": [
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "key"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  },
+                  {
+                    "type": 1,
+                    "string": "execute"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "__ConsentShieldGtmBridge"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": false
+                  }
+                ]
+              },
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "key"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  },
+                  {
+                    "type": 1,
+                    "string": "execute"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "__ConsentShieldGtmTemplate"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "clientAnnotations": {
+      "isEditedByUser": true
+    },
+    "isRequired": true
+  },
+  {
+    "instance": {
+      "key": {
+        "publicId": "write_data_layer",
+        "versionId": "1"
+      },
+      "param": [
+        {
+          "key": "keyPatterns",
+          "value": {
+            "type": 2,
+            "listItem": [
+              {
+                "type": 1,
+                "string": "ads_data_redaction"
+              },
+              {
+                "type": 1,
+                "string": "url_passthrough"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "clientAnnotations": {
+      "isEditedByUser": true
+    },
+    "isRequired": true
+  },
+  {
+    "instance": {
+      "key": {
+        "publicId": "inject_script",
+        "versionId": "1"
+      },
+      "param": [
+        {
+          "key": "urls",
+          "value": {
+            "type": 2,
+            "listItem": [
+              {
+                "type": 1,
+                "string": "https://app.rooni.io/cmp/*"
               }
             ]
           }
@@ -406,107 +830,84 @@ ___WEB_PERMISSIONS___
 ___TESTS___
 
 scenarios:
-- name: Injects the CMP script from the default origin
+- name: Sets a global default with everything optional denied when no rows are configured
+  code: |-
+    const calls = [];
+    mock('setDefaultConsentState', (s) => { calls.push(s); });
+    mock('injectScript', (url, onSuccess) => { onSuccess(); });
+    runCode(mockData);
+    assertThat(calls.length).isEqualTo(1);
+    assertThat(calls[0].ad_storage).isEqualTo('denied');
+    assertThat(calls[0].ad_user_data).isEqualTo('denied');
+    assertThat(calls[0].ad_personalization).isEqualTo('denied');
+    assertThat(calls[0].analytics_storage).isEqualTo('denied');
+    assertThat(calls[0].security_storage).isEqualTo('granted');
+    assertThat(calls[0].wait_for_update).isEqualTo(500);
+    assertThat(calls[0].region).isUndefined();
+- name: Applies region-specific defaults plus a global fallback
+  code: |-
+    const calls = [];
+    mock('setDefaultConsentState', (s) => { calls.push(s); });
+    mock('injectScript', (url, onSuccess) => { onSuccess(); });
+    const testData = mockData;
+    testData.defaultSettings = [{ region: 'US-CA, US-NY', ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted', analytics_storage: 'granted', functionality_storage: 'granted', personalization_storage: 'granted', security_storage: 'granted' }];
+    runCode(testData);
+    assertThat(calls.length).isEqualTo(2);
+    assertThat(calls[0].region).isEqualTo(['US-CA', 'US-NY']);
+    assertThat(calls[0].ad_storage).isEqualTo('granted');
+    assertThat(calls[1].ad_storage).isEqualTo('denied');
+- name: Updates consent for a returning visitor from the saved choice
+  code: |-
+    let update;
+    mock('getCookieValues', () => ['%7B%22purposes%22%3A%5B%22analytics_storage%22%5D%7D']);
+    mock('updateConsentState', (s) => { update = s; });
+    mock('injectScript', (url, onSuccess) => { onSuccess(); });
+    runCode(mockData);
+    assertThat(update.analytics_storage).isEqualTo('granted');
+    assertThat(update.ad_storage).isEqualTo('denied');
+    assertThat(update.security_storage).isEqualTo('granted');
+- name: Does not update consent for a first-time visitor
+  code: |-
+    mock('getCookieValues', () => []);
+    mock('injectScript', (url, onSuccess) => { onSuccess(); });
+    runCode(mockData);
+    assertApi('updateConsentState').wasNotCalled();
+- name: Sets ads data redaction and url passthrough when enabled
+  code: |-
+    mock('injectScript', (url, onSuccess) => { onSuccess(); });
+    const testData = mockData;
+    testData.adsDataRedaction = true;
+    testData.urlPassthrough = true;
+    runCode(testData);
+    assertApi('gtagSet').wasCalledWith('ads_data_redaction', true);
+    assertApi('gtagSet').wasCalledWith('url_passthrough', true);
+- name: Injects the CMP script and reports success
   code: |-
     mock('injectScript', (url, onSuccess) => {
       assertThat(url).isEqualTo('https://app.rooni.io/cmp/11111111-2222-3333-4444-555555555555.js');
       onSuccess();
     });
-
     runCode(mockData);
-
     assertApi('gtmOnSuccess').wasCalled();
     assertApi('gtmOnFailure').wasNotCalled();
-- name: Honours a custom script origin
-  code: |-
-    let injectedUrl;
-    mock('injectScript', (url, onSuccess) => {
-      injectedUrl = url;
-      onSuccess();
-    });
-
-    const testData = mockData;
-    testData.scriptOrigin = 'https://cmp.example.com';
-
-    runCode(testData);
-
-    assertThat(injectedUrl).isEqualTo('https://cmp.example.com/cmp/11111111-2222-3333-4444-555555555555.js');
-    assertApi('gtmOnSuccess').wasCalled();
-- name: Sets Consent Mode v2 defaults to denied
-  code: |-
-    let consentArgs;
-    mock('setDefaultConsentState', (args) => {
-      consentArgs = args;
-    });
-    mock('injectScript', (url, onSuccess) => {
-      onSuccess();
-    });
-
-    runCode(mockData);
-
-    assertThat(consentArgs.ad_storage).isEqualTo('denied');
-    assertThat(consentArgs.ad_user_data).isEqualTo('denied');
-    assertThat(consentArgs.ad_personalization).isEqualTo('denied');
-    assertThat(consentArgs.analytics_storage).isEqualTo('denied');
-    assertThat(consentArgs.functionality_storage).isEqualTo('granted');
-    assertThat(consentArgs.security_storage).isEqualTo('granted');
-    assertThat(consentArgs.wait_for_update).isEqualTo(500);
-- name: Skips consent defaults when the option is unchecked
-  code: |-
-    let called = false;
-    mock('setDefaultConsentState', () => {
-      called = true;
-    });
-    mock('injectScript', (url, onSuccess) => {
-      onSuccess();
-    });
-
-    const testData = mockData;
-    testData.setDefaultConsent = false;
-
-    runCode(testData);
-
-    assertThat(called).isEqualTo(false);
-    assertApi('gtmOnSuccess').wasCalled();
-- name: Uses no wait_for_update delay when the wait option is unchecked
-  code: |-
-    let consentArgs;
-    mock('setDefaultConsentState', (args) => {
-      consentArgs = args;
-    });
-    mock('injectScript', (url, onSuccess) => {
-      onSuccess();
-    });
-
-    const testData = mockData;
-    testData.waitForUpdate = false;
-
-    runCode(testData);
-
-    assertThat(consentArgs.wait_for_update).isEqualTo(0);
 - name: Reports failure when the script cannot load
   code: |-
-    mock('injectScript', (url, onSuccess, onFailure) => {
-      onFailure();
-    });
-
+    mock('injectScript', (url, onSuccess, onFailure) => { onFailure(); });
     runCode(mockData);
-
     assertApi('gtmOnFailure').wasCalled();
     assertApi('gtmOnSuccess').wasNotCalled();
 setup: |-
   const mockData = {
     websiteId: '11111111-2222-3333-4444-555555555555',
     scriptOrigin: 'https://app.rooni.io',
-    setDefaultConsent: true,
-    waitForUpdate: true,
-    asyncLoad: true
+    defaultSettings: [],
+    waitForUpdate: '500',
+    adsDataRedaction: false,
+    urlPassthrough: false
   };
 
 
 ___NOTES___
 
 Created by Rooni. Configure consent purposes, banner appearance and the preference centre in your Rooni dashboard at https://app.rooni.io.
-Fire this tag on the "Consent Initialization - All Pages" trigger so the Consent Mode defaults are set before any other tag runs.
-
-
+Fire this tag on the "Consent Initialization - All Pages" trigger so consent defaults are set before any other tag runs.

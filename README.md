@@ -1,6 +1,6 @@
 # Trust Signal — Google Tag Manager Template
 
-**Version 1** — Official Google Tag Manager custom tag template for the **Trust Signal** consent banner by [Rooni](https://rooni.io).
+**Version 2** — Official Google Tag Manager custom tag template for the **Trust Signal** consent banner by [Rooni](https://rooni.io).
 
 It loads the Trust Signal consent banner and preference centre on your site, sets Google Consent Mode v2 defaults before any other tag fires, and keeps every banner setting — purposes, wording, appearance, geo rules — in your Rooni dashboard rather than in GTM.
 
@@ -25,22 +25,33 @@ It loads the Trust Signal consent banner and preference centre on your site, set
 | Parameter | Default | Description |
 | --- | --- | --- |
 | Website ID | — | Required. The website identifier from your Rooni dashboard. |
-| Script Origin | `https://app.rooni.io` | Base URL serving the CMP. Change only if you self-host or use a custom domain. |
-| Set default consent state | on | Fires `gtag('consent','default', …)` with all advertising and analytics storage denied. |
-| Wait up to 500ms | on | Sets `wait_for_update: 500` so tags wait for a returning visitor's stored consent. |
-| Load script asynchronously | on | Injects the CMP script without blocking rendering. |
+| Default settings | none (all optional types denied everywhere) | One row per region (ISO 3166-2, comma separated). A blank region row applies everywhere else. |
+| Wait for update | `500` | Milliseconds Google tags wait for the visitor's choice. |
+| Redact ads data | off | Sets `ads_data_redaction`. |
+| Pass through URLs | off | Sets `url_passthrough`. |
+| Script origin | `https://app.rooni.io` | Base URL serving the banner. |
 
 ## What the tag does
 
-- Sets Consent Mode v2 defaults: `ad_storage`, `ad_user_data`, `ad_personalization`, `analytics_storage` denied; `functionality_storage`, `security_storage` granted.
-- Injects `<Script Origin>/cmp/<Website ID>.js`.
-- Calls `gtmOnSuccess()` / `gtmOnFailure()` so GTM reports tag status accurately.
+1. Sets default consent with `setDefaultConsentState`, per region, on Consent Initialization.
+2. Reads the visitor's saved choice (`cs_consent` cookie) and applies it immediately with `updateConsentState`.
+3. Loads `<Script origin>/cmp/<Website ID>.js`. When the visitor changes their choice, the banner calls back into the template, which calls `updateConsentState` (no `gtag('consent', …)` commands).
+4. Calls `gtmOnSuccess()` / `gtmOnFailure()`.
+
+Consent types: `ad_storage`, `ad_user_data`, `ad_personalization`, `analytics_storage`, `functionality_storage`, `personalization_storage`, `security_storage` (always granted).
 
 ## Permissions requested
 
+- `access_consent` — write access to the seven consent types.
+- `get_cookies` — read only the `cs_consent` cookie.
+- `access_globals` — `__ConsentShieldGtmBridge` and `__ConsentShieldGtmTemplate` (banner ↔ template bridge).
+- `write_data_layer` — `ads_data_redaction`, `url_passthrough`.
 - `inject_script` — limited to `https://app.rooni.io/cmp/*`.
-- `access_consent` — write access to the six Consent Mode v2 types.
-- `logging` — debug console output only.
+- `logging` — debug only.
+
+## Changelog
+
+See `metadata.yaml`.
 
 ## Support
 

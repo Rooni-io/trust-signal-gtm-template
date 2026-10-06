@@ -11,7 +11,7 @@ ___INFO___
 {
   "type": "TAG",
   "id": "cvt_rooni_consent_banner",
-  "version": 3,
+  "version": 1,
   "securityGroups": [],
   "displayName": "Trust Signal",
   "categories": [
